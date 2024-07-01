@@ -127,7 +127,7 @@ Exemplo de retorno **Error**
 
 ## Checar pagamento (em desenvolvimento)
 
-Para criar um pagamento use a rota ( **/payment/check/** )
+Para checar um pagamento use a rota ( **/payment/check/** )
 
 método **POST**
 
