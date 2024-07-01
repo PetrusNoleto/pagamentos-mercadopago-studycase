@@ -67,4 +67,11 @@ export class MercadoPagoPayment {
         this.paymentProductPrice=defaultProductQuantity
 
     }
+   public index(){
+       return(
+           this.paymentProductPrice 
+       )
+   }
+
+
 }
