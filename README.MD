@@ -86,7 +86,7 @@ Para criar um pagamento use a rota ( **/payment/create/** )
 
 método **POST**
 
-Exemplo do pedido do pagamento  com produto!  **todos os dados são obrigatórios**
+Exemplo do pedido do pagamento 
 
 ```json
 {
@@ -107,9 +107,6 @@ Exemplo do pedido do pagamento  com produto!  **todos os dados são obrigatório
   }
 }
 ```
-
-Exemplo do pedido do pagamento sem produto! **todos os dados são obrigatórios**
-
 Exemplo de retorno **Success**
 
 ```json
