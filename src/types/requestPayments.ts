@@ -9,15 +9,7 @@ export interface mercadoPagoPayment{
     paymentIssuerId:string,
 }
 export interface mercadoPagoPaymentPayer{
-    paymentPayerType:string,
     paymentPayerEmail:string,
     paymentPayerIndentificationType:string,
     paymentPayerIndentificationNumber:string
-}
-export interface mercadoPagoPaymentItem{
-        paymentProductId:string
-        paymentProductName: string,
-        paymentProductDescription: string,
-        paymentProductQuantity: number,
-        paymentProductPrice: number
 }

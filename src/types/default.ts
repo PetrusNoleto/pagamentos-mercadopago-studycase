@@ -7,11 +7,9 @@ export interface defaultMercadoPagoPayment{
     defaultPaymentMethodId:string,
     defaultPaymentToken:string
     defaultPaymentIssuerId:string,
-    defaultPaymentPayer:defaultMercadoPagoPaymentPayer,
-    defaultPaymentItems:defaultMercadoPagoPaymentItem[]
+    defaultPaymentPayer:defaultMercadoPagoPaymentPayer
 }
 export interface defaultMercadoPagoPaymentPayer{
-    defaultPayerType:string,
     defaultPayerEmail:string,
     defaultPayerIdentification:defaultMercadoPagoPaymentPayerIndentification
 }
@@ -21,10 +19,3 @@ export interface defaultMercadoPagoPaymentPayerIndentification{
     defaultPayerIndentificationNumber:string
 }
 
-export interface defaultMercadoPagoPaymentItem{
-        defaultProductId:string
-        defaultProductName: string,
-        defaultProductDescription: string,
-        defaultProductQuantity: number,
-        defaultProductPrice: number
-}

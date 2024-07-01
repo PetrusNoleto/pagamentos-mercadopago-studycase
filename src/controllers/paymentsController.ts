@@ -1,26 +1,21 @@
 import { defaultMercadoPagoPayment } from "types/default"
+import { MercadoPagoConfig, Payment } from 'mercadopago';
+
 
 export class MercadoPagoPayment {
-   private paymentId:string
-   private paymentDescription:string
-   private paymentValue:number
-   private paymentAccessToken:string
-   private paymentInstallments:number
-   private paymentMethodId:string
-   private paymentToken:string
-   private paymentIssuerId:string
-   private paymentPayerType:string
-   private paymentPayerEmail:string
-   private paymentPayerIndentificationType:string
-   private paymentPayerIndentificationNumber:string
-   private paymentProductId:string
-   private paymentProductName: string
-   private paymentProductDescription: string
-   private paymentProductQuantity: number
-   private paymentProductPrice: number
+   private readonly paymentId:string
+   private readonly paymentDescription:string
+   private readonly paymentValue:number
+   private readonly paymentAccessToken:string
+   private readonly paymentInstallments:number
+   private readonly paymentMethodId:string
+   private readonly paymentToken:string
+   private readonly paymentIssuerId:string
+   private readonly paymentPayerEmail:string
+   private readonly paymentPayerIndentificationType:string
+   private readonly paymentPayerIndentificationNumber:string
 
-
-    constructor(
+   constructor(
         {
         defaultPaymentId,
         defaultPaymentDescription,
@@ -32,21 +27,11 @@ export class MercadoPagoPayment {
         defaultPaymentIssuerId,
         defaultPaymentPayer:{
             defaultPayerEmail,
-            defaultPayerType,
             defaultPayerIdentification:{
                 defaultPayerIndentificationType,
                 defaultPayerIndentificationNumber
             }
-        },
-        defaultPaymentItems:[
-            {
-                defaultProductId,
-                defaultProductName,
-                defaultProductDescription,
-                defaultProductPrice,
-                defaultProductQuantity
-            }
-        ]   
+        }
     }:defaultMercadoPagoPayment){
         this.paymentId = defaultPaymentId
         this.paymentDescription= defaultPaymentDescription
@@ -56,22 +41,37 @@ export class MercadoPagoPayment {
         this.paymentMethodId= defaultPaymentMethodId
         this.paymentToken= defaultPaymentToken
         this.paymentIssuerId=defaultPaymentIssuerId
-        this.paymentPayerType=defaultPayerType
         this.paymentPayerEmail=defaultPayerEmail
         this.paymentPayerIndentificationType=defaultPayerIndentificationType
         this.paymentPayerIndentificationNumber=defaultPayerIndentificationNumber
-        this.paymentProductId=defaultProductId
-        this.paymentProductName=defaultProductName
-        this.paymentProductDescription=defaultProductDescription
-        this.paymentProductQuantity =defaultProductPrice
-        this.paymentProductPrice=defaultProductQuantity
-
     }
-   public index(){
-       return(
-           this.paymentProductPrice 
-       )
-   }
-
-
+    public async creditCard(){
+        const client = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+        const mpPayment = new Payment(client);
+        const requestOptions = {
+	       idempotencyKey: this.paymentId,
+        };
+        const paymentCreditBody = {
+        	transaction_amount: this.paymentValue,
+        	description: this.paymentDescription,
+        	payment_method_id: this.paymentMethodId,
+            token:this.paymentToken,
+            installments:Number(this.paymentInstallments),
+            issuer_id:Number(this.paymentIssuerId),
+        	payer: {
+                email: this.paymentPayerEmail,
+                identification:{
+                    type:this.paymentPayerIndentificationType,
+                    number:this.paymentPayerIndentificationNumber
+                }
+        	},
+        };
+        try{
+            const requestPayment = await mpPayment.create({ body:paymentCreditBody, requestOptions })
+            return JSON.stringify(requestPayment) as string
+        }catch(error){
+            console.log(error)
+            throw error;
+        }
+    }
 }
