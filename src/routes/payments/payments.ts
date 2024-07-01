@@ -30,13 +30,18 @@ routePayments.post("/payment/create/",async (req:Request,res:Response)=>{
         )
         switch (paymentData.paymentMethodId){
             case "pix":
-                returnData = {code:203,message:"metodo de pagmento pix",payment:{}};
+                try {
+                    const paymentPix = await payment.pix()
+                    returnData = {code:203,message:"pagamento pix criado com sucesso",payment:JSON.parse(paymentPix)};
+                }catch(error){
+                    returnData = {code:400,message:"não foi possivel criar seu pagamento",payment:null};
+                }
             break;
             case "visa":
             case "master":
                 try {
                     const paymentCC = await payment.creditCard()
-                    returnData = {code:203,message:"pagamento criado com sucesso",payment:JSON.parse(paymentCC)};
+                    returnData = {code:203,message:"pagamento com cartão de credito criado com sucesso",payment:JSON.parse(paymentCC)};
                 }catch(error){
                     returnData = {code:400,message:"não foi possivel criar seu pagamento",payment:null};
                 }

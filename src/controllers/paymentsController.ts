@@ -74,4 +74,27 @@ export class MercadoPagoPayment {
             throw error;
         }
     }
+    public async pix(){
+        const pixclient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+        const pixMpPayment = new Payment(pixclient);
+        const pixRequestOptions = {
+	       idempotencyKey: this.paymentId,
+        };
+        const pixPaymentCreditBody = {
+        	transaction_amount: this.paymentValue,
+        	description: this.paymentDescription,
+        	payment_method_id: this.paymentMethodId,
+        	payer: {
+                email: this.paymentPayerEmail,
+        	},
+        };
+        try{
+            const requestPayment = await pixMpPayment.create({ body:pixPaymentCreditBody, requestOptions:pixRequestOptions })
+            return JSON.stringify(requestPayment) as string
+        }catch(error){
+            console.log(error)
+            throw error;
+        }
+    }
+
 }
