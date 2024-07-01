@@ -1,4 +1,4 @@
-export class PaymentsControllers {
+export class MercadoPagoPayment {
     private paymentId:string
     constructor(){
         
