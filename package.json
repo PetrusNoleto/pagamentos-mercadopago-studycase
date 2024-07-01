@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev ./src/api.ts",
     "build": "tsc",
-    "start": "node ./dist/api.js"
+    "start": "npm run build & node ./dist/api.js"
   },
   "author": "petrus noleto",
   "license": "MIT",
