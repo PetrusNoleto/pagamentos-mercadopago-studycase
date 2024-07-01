@@ -1,11 +1,11 @@
 {
   "name": "pnpaymentsmercadopago",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/api.js",
   "scripts": {
     "dev": "ts-node-dev ./src/api.ts",
     "build": "tsc",
-    "start": "node ./dist/api.js"
+    "start": "npm run build & node ./dist/api.js"
   },
   "author": "petrus noleto",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mercadopago": "^2.0.10"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
