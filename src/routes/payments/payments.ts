@@ -22,8 +22,8 @@ routePayments.post("/payment/create/",async (req:Request,res:Response)=>{
                 defaultPaymentPayer:{
                     defaultPayerEmail:payerData.paymentPayerEmail,
                     defaultPayerIdentification:{
-                        defaultPayerIndentificationType:payerData.paymentPayerIndentificationType,
-                        defaultPayerIndentificationNumber:payerData.paymentPayerIndentificationNumber
+                        defaultPayerIdentificationType:payerData.paymentPayerIdentificationType,
+                        defaultPayerIdentificationNumber:payerData.paymentPayerIdentificationNumber
                     }
                 }
             }

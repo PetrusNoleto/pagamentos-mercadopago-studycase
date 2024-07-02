@@ -11,11 +11,11 @@ export interface defaultMercadoPagoPayment{
 }
 export interface defaultMercadoPagoPaymentPayer{
     defaultPayerEmail:string,
-    defaultPayerIdentification:defaultMercadoPagoPaymentPayerIndentification
+    defaultPayerIdentification:defaultMercadoPagoPaymentPayerIdentification
 }
 
-export interface defaultMercadoPagoPaymentPayerIndentification{
-    defaultPayerIndentificationType:string,
-    defaultPayerIndentificationNumber:string
+export interface defaultMercadoPagoPaymentPayerIdentification{
+    defaultPayerIdentificationType:string,
+    defaultPayerIdentificationNumber:string
 }
 

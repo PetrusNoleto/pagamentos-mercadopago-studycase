@@ -5,7 +5,6 @@ import {routePayments} from "./routes/payments/payments";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-
 const apiPort = process.env.API_PORT;
 const paymentsApi = express();
 

@@ -28,22 +28,22 @@ export class MercadoPagoPayment {
         defaultPaymentPayer:{
             defaultPayerEmail,
             defaultPayerIdentification:{
-                defaultPayerIndentificationType,
-                defaultPayerIndentificationNumber
+                defaultPayerIdentificationType,
+                defaultPayerIdentificationNumber
             }
         }
     }:defaultMercadoPagoPayment){
-        this.paymentId = defaultPaymentId
-        this.paymentDescription= defaultPaymentDescription
-        this.paymentValue= defaultPaymentValue
-        this.paymentAccessToken= defaultPaymentAccessToken
-        this.paymentInstallments= defaultPaymentInstallments
-        this.paymentMethodId= defaultPaymentMethodId
-        this.paymentToken= defaultPaymentToken
-        this.paymentIssuerId=defaultPaymentIssuerId
-        this.paymentPayerEmail=defaultPayerEmail
-        this.paymentPayerIndentificationType=defaultPayerIndentificationType
-        this.paymentPayerIndentificationNumber=defaultPayerIndentificationNumber
+        this.paymentId = defaultPaymentId;
+        this.paymentDescription= defaultPaymentDescription;
+        this.paymentValue= defaultPaymentValue;
+        this.paymentAccessToken= defaultPaymentAccessToken;
+        this.paymentInstallments= defaultPaymentInstallments;
+        this.paymentMethodId= defaultPaymentMethodId;
+        this.paymentToken= defaultPaymentToken;
+        this.paymentIssuerId=defaultPaymentIssuerId;
+        this.paymentPayerEmail=defaultPayerEmail;
+        this.paymentPayerIndentificationType=defaultPayerIdentificationType;
+        this.paymentPayerIndentificationNumber=defaultPayerIdentificationNumber;
     }
     public async creditCard(){
         const client = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
@@ -67,10 +67,10 @@ export class MercadoPagoPayment {
         	},
         };
         try{
-            const requestPayment = await mpPayment.create({ body:paymentCreditBody, requestOptions })
-            return JSON.stringify(requestPayment) as string
+            const requestPayment = await mpPayment.create({ body:paymentCreditBody, requestOptions });
+            return JSON.stringify(requestPayment) as string;
         }catch(error){
-            console.log(error)
+            console.log(error);
             throw error;
         }
     }
