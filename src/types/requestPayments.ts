@@ -10,6 +10,6 @@ export interface mercadoPagoPayment{
 }
 export interface mercadoPagoPaymentPayer{
     paymentPayerEmail:string,
-    paymentPayerIndentificationType:string,
-    paymentPayerIndentificationNumber:string
+    paymentPayerIdentificationType:string,
+    paymentPayerIdentificationNumber:string
 }
