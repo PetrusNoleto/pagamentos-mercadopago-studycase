@@ -211,7 +211,7 @@ Exemplo de retorno **Error**
 ```
 ## Reembolsar Pagamento
 
-Para reembolsar um pagamento use a rota ( **/payment/cancel/** )
+Para reembolsar um pagamento use a rota ( **/payment/refund/** )
 
 método **POST**
 
