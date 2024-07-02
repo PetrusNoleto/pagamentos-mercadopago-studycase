@@ -1,4 +1,4 @@
-# Documentação PNPAYMENTS - mercadopago API  v0.0.2
+# Documentação PNPAYMENTS - mercadopago API  v0.0.5
 
 # Guia de instalação
 
@@ -110,9 +110,11 @@ Exemplo do pedido do pagamento
 Exemplo de retorno **Success**
 
 ```json
-"code": 203,
-"message": "pagamento criado com sucesso",
-"payment": {}
+{
+    "code": 203,
+    "message": "pagamento criado com sucesso",
+    "payment": {}
+}
 ```
 
 Exemplo de retorno **Error**
@@ -162,6 +164,83 @@ Exemplo de retorno **Error**
 {
   "code": 404,
   "message": "não foi possivel checar seu pagamento",
+  "payment": null
+}
+```
+
+
+## Cancelar Pagamento
+
+Para cancelar um pagamento use a rota ( **/payment/cancel/** )
+
+método **POST**
+
+Exemplo de cancelamento do pagamento
+
+```json
+{
+  "requestPaymentId":"0000000000",
+  "requestPaymentAccessToken":"seu access token (credencial de produção)"
+}
+```
+
+Exemplo de retorno **Success**
+
+```json
+{
+  "code": 200,
+  "message": "pagamento cancelado com sucesso",
+  "payment": {
+    "paymentStatus": "cancelled",
+    "paymentStatusDetail": "by_collector",
+    "paymentStatusType": "bank_transfer",
+    "paymentStatusMethod": "pix",
+    "paymentStatusApprovedDate": null
+  }
+}
+```
+
+Exemplo de retorno **Error**
+
+```json
+{
+  "code": 404,
+  "message": "não foi possivel cancelar seu pagamento",
+  "payment": null
+}
+```
+## Reembolsar Pagamento
+
+Para reembolsar um pagamento use a rota ( **/payment/cancel/** )
+
+método **POST**
+
+Exemplo de reembolso do pagamento
+
+```json
+{
+  "requestPaymentId":"0000000000",
+  "requestPaymentAccessToken":"seu access token (credencial de produção)",
+  "requestPaymentValue":0
+}
+```
+
+Exemplo de retorno **Success**
+
+```json
+{
+  "code": 203,
+  "message": "pagamento reembolsado com sucesso!",
+  "payment": null
+}
+```
+
+Exemplo de retorno **Error**
+
+```json
+{
+  "code": 404,
+  "message": "não foi possivel reembolsar seu pagamento",
   "payment": null
 }
 ```

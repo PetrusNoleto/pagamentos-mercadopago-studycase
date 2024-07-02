@@ -1,11 +1,11 @@
 import { defaultMercadoPagoPayment } from "types/default";
-import { MercadoPagoConfig, Payment } from 'mercadopago';
+import { MercadoPagoConfig, Payment,PaymentRefund } from 'mercadopago';
 
 
 export class MercadoPagoPayment {
    private readonly paymentId:string;
    private readonly paymentDescription:string;
-   private readonly paymentValue:number;
+   private paymentValue:number;
    private paymentAccessToken:string;
    private readonly paymentInstallments:number;
    private readonly paymentMethodId:string;
@@ -15,8 +15,7 @@ export class MercadoPagoPayment {
    private readonly paymentPayerIdentificationType:string;
    private readonly paymentPayerIdentificationNumber:string;
 
-   private checkPaymentStatusId:string
-
+   private mercadoPagoPaymentId:string
    constructor(
         {
         defaultPaymentId,
@@ -46,7 +45,7 @@ export class MercadoPagoPayment {
         this.paymentPayerEmail=defaultPayerEmail;
         this.paymentPayerIdentificationType=defaultPayerIdentificationType;
         this.paymentPayerIdentificationNumber=defaultPayerIdentificationNumber;
-        this.checkPaymentStatusId = "";
+        this.mercadoPagoPaymentId = "";
    }
     public async creditCard(){
         const client = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
@@ -100,7 +99,7 @@ export class MercadoPagoPayment {
         }
     };
     public async status(requestStatusPaymentId:string,requestStatusPaymentAccessToken:string){
-        this.checkPaymentStatusId = requestStatusPaymentId
+        this.mercadoPagoPaymentId = requestStatusPaymentId
         this.paymentAccessToken = requestStatusPaymentAccessToken
 
         const paymentStatusClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
@@ -108,7 +107,7 @@ export class MercadoPagoPayment {
         const paymentStatus = new Payment(paymentStatusClient);
         try{
            const getPaymentStatus = await paymentStatus.get({
-                id: this.checkPaymentStatusId
+                id: this.mercadoPagoPaymentId
            })
            let paymentStatusData = {
                paymentStatus:getPaymentStatus.status,
@@ -122,5 +121,53 @@ export class MercadoPagoPayment {
             console.log(error);
             throw error;
         }
-    }
+    };
+    public async cancel(requestCancelPaymentId:string,requestCancelPaymentAccessToken:string){
+        this.mercadoPagoPaymentId = requestCancelPaymentId;
+        this.paymentAccessToken = requestCancelPaymentAccessToken;
+        const paymentCancelClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+        const paymentStatus = new Payment(paymentCancelClient);
+        try{
+            const cancelPayment = await paymentStatus.cancel({
+                id: this.mercadoPagoPaymentId,
+                requestOptions: {
+                    idempotencyKey: this.mercadoPagoPaymentId
+                },
+            })
+            let paymentCancelData = {
+                paymentStatus:cancelPayment.status,
+                paymentStatusDetail:cancelPayment.status_detail,
+                paymentStatusType: cancelPayment.payment_type_id,
+                paymentStatusMethod:cancelPayment.payment_method_id,
+                paymentStatusApprovedDate:cancelPayment.date_approved
+            }
+            return JSON.stringify(paymentCancelData) as string;
+        }catch (error){
+            console.log(error);
+            throw error;
+        }
+    };
+    public async refund(requestRefundPaymentId:string,requestRefundPaymentAccessToken:string,requestRefundPaymentValue:number){
+        this.mercadoPagoPaymentId = requestRefundPaymentId;
+        this.paymentAccessToken = requestRefundPaymentAccessToken;
+        this.paymentValue = requestRefundPaymentValue;
+        const paymentCancelClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+        const paymentRefund = new PaymentRefund(paymentCancelClient);
+        try{
+            const refundPayment = await paymentRefund.create({
+                payment_id: this.mercadoPagoPaymentId,
+                body: {
+                    amount: Number(this.paymentValue)
+                }
+            })
+            let paymentRefundData = {
+                paymentStatusDetail:refundPayment.id,
+                paymentStatus:refundPayment.status
+            }
+            return JSON.stringify(paymentRefundData) as string;
+        }catch (error){
+            console.log(error);
+            throw error;
+        }
+    };
 }

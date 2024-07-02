@@ -85,5 +85,30 @@ routePayments.post('/payment/check/status/',async (req:Request,res:Response)=>{
     }else{
         res.status(400).json({code:403,message:"dados da requisição iconrretas",payment:null})
     }
-})
-
+});
+routePayments.post('/payment/cancel/',async (req:Request,res:Response)=>{
+    const {requestPaymentId,requestPaymentAccessToken} = req.body;
+    if(requestPaymentId && requestPaymentAccessToken){
+        try {
+            const getPaymentStatus = await paymentDefault.cancel(requestPaymentId,requestPaymentAccessToken);
+            return res.status(200).json({code:200,message:"pagamento cancelado com sucesso",payment:JSON.parse(getPaymentStatus)});
+        }catch (error){
+            return res.status(203).json({code:404,message:"não foi possivel cancelar seu pagamento",payment:null});
+        }
+    }else{
+        res.status(400).json({code:403,message:"dados da requisição iconrretas",payment:null})
+    }
+});
+routePayments.post('/payment/refund/',async (req:Request,res:Response)=>{
+    const {requestPaymentId,requestPaymentAccessToken,requestPaymentValue} = req.body;
+    if(requestPaymentId && requestPaymentAccessToken && requestPaymentValue){
+        try {
+            const paymentRefund = await paymentDefault.refund(requestPaymentId,requestPaymentAccessToken,Number(requestPaymentValue));
+            return res.status(200).json({code:200,message:"pagamento reembolsado com sucesso!",payment:null});
+        }catch (error){
+            return res.status(203).json({code:404,message:"não foi possivel reembolsar seu pagamento",payment:null});
+        }
+    }else{
+        res.status(400).json({code:403,message:"dados da requisição iconrretas",payment:null})
+    }
+});
