@@ -12,8 +12,8 @@ export class MercadoPagoPayment {
    private readonly paymentToken:string
    private readonly paymentIssuerId:string
    private readonly paymentPayerEmail:string
-   private readonly paymentPayerIndentificationType:string
-   private readonly paymentPayerIndentificationNumber:string
+   private readonly paymentPayerIdentificationType:string
+   private readonly paymentPayerIdentificationNumber:string
 
    constructor(
         {
@@ -42,8 +42,8 @@ export class MercadoPagoPayment {
         this.paymentToken= defaultPaymentToken;
         this.paymentIssuerId=defaultPaymentIssuerId;
         this.paymentPayerEmail=defaultPayerEmail;
-        this.paymentPayerIndentificationType=defaultPayerIdentificationType;
-        this.paymentPayerIndentificationNumber=defaultPayerIdentificationNumber;
+        this.paymentPayerIdentificationType=defaultPayerIdentificationType;
+        this.paymentPayerIdentificationNumber=defaultPayerIdentificationNumber;
     }
     public async creditCard(){
         const client = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
@@ -61,8 +61,8 @@ export class MercadoPagoPayment {
         	payer: {
                 email: this.paymentPayerEmail,
                 identification:{
-                    type:this.paymentPayerIndentificationType,
-                    number:this.paymentPayerIndentificationNumber
+                    type:this.paymentPayerIdentificationType,
+                    number:this.paymentPayerIdentificationNumber
                 }
         	},
         };
