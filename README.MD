@@ -125,9 +125,9 @@ Exemplo de retorno **Error**
 }
 ```
 
-## Checar pagamento (em desenvolvimento)
+## Checar pagamento
 
-Para checar um pagamento use a rota ( **/payment/check/** )
+Para checar um pagamento use a rota ( **/payment/check/status/** )
 
 método **POST**
 
@@ -135,8 +135,8 @@ Exemplo de checagem de pagamento
 
 ```json
 {
-  "paymentId":"0000000000",
-  "paymentAccessToken":"seu access token (credencial de produção)"
+  "requestPaymentId":"0000000000",
+  "requestPaymentAccessToken":"seu access token (credencial de produção)"
 }
 ```
 
@@ -146,7 +146,13 @@ Exemplo de retorno **Success**
 {
   "code": 200,
   "message": "pagamento checado com sucesso",
-  "payment": {}
+  "payment": {
+    "paymentStatus": "approved",
+    "paymentStatusDetail": "accredited",
+    "paymentStatusType": "credit_card",
+    "paymentStatusMethod": "master",
+    "paymentStatusApprovedDate": "2024-07-01T13:55:02.793-04:00"
+  }
 }
 ```
 

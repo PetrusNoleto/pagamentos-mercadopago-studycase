@@ -1,6 +1,6 @@
 {
   "name": "pnpaymentsmercadopago",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./dist/api.js",
   "scripts": {
     "dev": "ts-node-dev ./src/api.ts",

@@ -1,19 +1,21 @@
-import { defaultMercadoPagoPayment } from "types/default"
+import { defaultMercadoPagoPayment } from "types/default";
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 
 export class MercadoPagoPayment {
-   private readonly paymentId:string
-   private readonly paymentDescription:string
-   private readonly paymentValue:number
-   private readonly paymentAccessToken:string
-   private readonly paymentInstallments:number
-   private readonly paymentMethodId:string
-   private readonly paymentToken:string
-   private readonly paymentIssuerId:string
-   private readonly paymentPayerEmail:string
-   private readonly paymentPayerIdentificationType:string
-   private readonly paymentPayerIdentificationNumber:string
+   private readonly paymentId:string;
+   private readonly paymentDescription:string;
+   private readonly paymentValue:number;
+   private paymentAccessToken:string;
+   private readonly paymentInstallments:number;
+   private readonly paymentMethodId:string;
+   private readonly paymentToken:string;
+   private readonly paymentIssuerId:string;
+   private readonly paymentPayerEmail:string;
+   private readonly paymentPayerIdentificationType:string;
+   private readonly paymentPayerIdentificationNumber:string;
+
+   private checkPaymentStatusId:string
 
    constructor(
         {
@@ -44,7 +46,8 @@ export class MercadoPagoPayment {
         this.paymentPayerEmail=defaultPayerEmail;
         this.paymentPayerIdentificationType=defaultPayerIdentificationType;
         this.paymentPayerIdentificationNumber=defaultPayerIdentificationNumber;
-    }
+        this.checkPaymentStatusId = "";
+   }
     public async creditCard(){
         const client = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
         const mpPayment = new Payment(client);
@@ -73,10 +76,10 @@ export class MercadoPagoPayment {
             console.log(error);
             throw error;
         }
-    }
+    };
     public async pix(){
-        const pixclient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
-        const pixMpPayment = new Payment(pixclient);
+        const pixClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+        const pixMpPayment = new Payment(pixClient);
         const pixRequestOptions = {
 	       idempotencyKey: this.paymentId,
         };
@@ -89,12 +92,35 @@ export class MercadoPagoPayment {
         	},
         };
         try{
-            const requestPayment = await pixMpPayment.create({ body:pixPaymentCreditBody, requestOptions:pixRequestOptions })
-            return JSON.stringify(requestPayment) as string
+            const requestPayment = await pixMpPayment.create({ body:pixPaymentCreditBody, requestOptions:pixRequestOptions });
+            return JSON.stringify(requestPayment) as string;
         }catch(error){
-            console.log(error)
+            console.log(error);
+            throw error;
+        }
+    };
+    public async status(requestStatusPaymentId:string,requestStatusPaymentAccessToken:string){
+        this.checkPaymentStatusId = requestStatusPaymentId
+        this.paymentAccessToken = requestStatusPaymentAccessToken
+
+        const paymentStatusClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
+
+        const paymentStatus = new Payment(paymentStatusClient);
+        try{
+           const getPaymentStatus = await paymentStatus.get({
+                id: this.checkPaymentStatusId
+           })
+           let paymentStatusData = {
+               paymentStatus:getPaymentStatus.status,
+               paymentStatusDetail:getPaymentStatus.status_detail,
+               paymentStatusType: getPaymentStatus.payment_type_id,
+               paymentStatusMethod:getPaymentStatus.payment_method_id,
+               paymentStatusApprovedDate:getPaymentStatus.date_approved
+           }
+            return JSON.stringify(paymentStatusData) as string;
+        }catch (error){
+            console.log(error);
             throw error;
         }
     }
-
 }

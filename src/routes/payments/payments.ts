@@ -3,6 +3,25 @@ import {mercadoPagoPayment, mercadoPagoPaymentPayer} from "../../types/requestPa
 import {MercadoPagoPayment} from "../../controllers/paymentsController";
 export  const routePayments = Router();
 
+const paymentDefault = new MercadoPagoPayment({
+        defaultPaymentId:"",
+        defaultPaymentDescription:"",
+        defaultPaymentValue:0,
+        defaultPaymentAccessToken:"",
+        defaultPaymentInstallments:0,
+        defaultPaymentMethodId:"",
+        defaultPaymentToken:"",
+        defaultPaymentIssuerId:"",
+        defaultPaymentPayer:{
+        defaultPayerEmail:"",
+            defaultPayerIdentification:{
+            defaultPayerIdentificationType:"",
+                defaultPayerIdentificationNumber:""
+        }
+    }
+})
+
+
 routePayments.post("/payment/create/",async (req:Request,res:Response)=>{
     let returnData = undefined;
     const {requestPaymentData,requestPayerData} = req.body;
@@ -54,5 +73,17 @@ routePayments.post("/payment/create/",async (req:Request,res:Response)=>{
     }
 });
 
-
+routePayments.post('/payment/check/status/',async (req:Request,res:Response)=>{
+    const {requestPaymentId,requestPaymentAccessToken} = req.body;
+    if(requestPaymentId && requestPaymentAccessToken){
+        try {
+            const getPaymentStatus = await paymentDefault.status(requestPaymentId,requestPaymentAccessToken);
+            return res.status(200).json({code:200,message:"pagamento checado com sucesso",payment:JSON.parse(getPaymentStatus)});
+        }catch (error){
+            return res.status(203).json({code:404,message:"não foi possivel checar seu pagamento",payment:null});
+        }
+    }else{
+        res.status(400).json({code:403,message:"dados da requisição iconrretas",payment:null})
+    }
+})
 
