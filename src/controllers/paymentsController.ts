@@ -1,11 +1,11 @@
 import { defaultMercadoPagoPayment } from "types/default";
-import { MercadoPagoConfig, Payment,PaymentRefund } from 'mercadopago';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 
 export class MercadoPagoPayment {
    private readonly paymentId:string;
    private readonly paymentDescription:string;
-   private paymentValue:number;
+   private readonly paymentValue:number;
    private paymentAccessToken:string;
    private readonly paymentInstallments:number;
    private readonly paymentMethodId:string;
@@ -142,29 +142,6 @@ export class MercadoPagoPayment {
                 paymentStatusApprovedDate:cancelPayment.date_approved
             }
             return JSON.stringify(paymentCancelData) as string;
-        }catch (error){
-            console.log(error);
-            throw error;
-        }
-    };
-    public async refund(requestRefundPaymentId:string,requestRefundPaymentAccessToken:string,requestRefundPaymentValue:number){
-        this.mercadoPagoPaymentId = requestRefundPaymentId;
-        this.paymentAccessToken = requestRefundPaymentAccessToken;
-        this.paymentValue = requestRefundPaymentValue;
-        const paymentCancelClient = new MercadoPagoConfig({ accessToken: this.paymentAccessToken});
-        const paymentRefund = new PaymentRefund(paymentCancelClient);
-        try{
-            const refundPayment = await paymentRefund.create({
-                payment_id: this.mercadoPagoPaymentId,
-                body: {
-                    amount: Number(this.paymentValue)
-                }
-            })
-            let paymentRefundData = {
-                paymentStatusDetail:refundPayment.id,
-                paymentStatus:refundPayment.status
-            }
-            return JSON.stringify(paymentRefundData) as string;
         }catch (error){
             console.log(error);
             throw error;

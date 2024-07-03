@@ -19,3 +19,7 @@ export interface defaultMercadoPagoPaymentPayerIdentification{
     defaultPayerIdentificationNumber:string
 }
 
+export  interface  defaultMercadoPagoRefund{
+    defaultPaymentId:string,
+    defaultPaymentAccessToken:string
+}
