@@ -1,6 +1,6 @@
 {
   "name": "pnpaymentsmercadopago",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "./dist/api.js",
   "scripts": {
     "dev": "ts-node-dev ./src/api.ts",
@@ -11,11 +11,11 @@
   "license": "MIT",
   "description": "pagamentos pix e cartão de credito usando mercado",
   "dependencies": {
-    "body-parser": "^1.20.2",
+    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mercadopago": "^2.0.10"
+    "express": "^4.21.1",
+    "mercadopago": "^2.0.15"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

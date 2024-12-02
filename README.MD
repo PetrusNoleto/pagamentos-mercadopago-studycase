@@ -111,7 +111,7 @@ Exemplo de retorno **Success**
 
 ```json
 {
-    "code": 203,
+    "code": 201,
     "message": "pagamento criado com sucesso",
     "payment": {}
 }
@@ -229,7 +229,7 @@ Exemplo de retorno **Success**
 
 ```json
 {
-  "code": 203,
+  "code": 201,
   "message": "pagamento reembolsado com sucesso!",
   "payment": null
 }

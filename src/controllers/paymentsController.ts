@@ -82,7 +82,7 @@ export class MercadoPagoPayment {
         const pixRequestOptions = {
 	       idempotencyKey: this.paymentId,
         };
-        const pixPaymentCreditBody = {
+        const pixPaymentPixBody = {
         	transaction_amount: this.paymentValue,
         	description: this.paymentDescription,
         	payment_method_id: this.paymentMethodId,
@@ -91,8 +91,21 @@ export class MercadoPagoPayment {
         	},
         };
         try{
-            const requestPayment = await pixMpPayment.create({ body:pixPaymentCreditBody, requestOptions:pixRequestOptions });
-            return JSON.stringify(requestPayment) as string;
+            const requestPayment = await pixMpPayment.create({ body:pixPaymentPixBody, requestOptions:pixRequestOptions });
+            let responsePayment:Object | null = {}
+            
+            if(requestPayment && requestPayment.point_of_interaction && requestPayment.point_of_interaction.transaction_data){
+                 responsePayment = {
+                    id:requestPayment.id,
+                    status:requestPayment.status,
+                    qrcode:requestPayment.point_of_interaction.transaction_data.qr_code,
+                    qrcodeBase64:requestPayment.point_of_interaction.transaction_data.qr_code_base64,
+                    url:requestPayment.point_of_interaction.transaction_data.ticket_url
+                }
+            }else{
+                 responsePayment = null
+            }
+            return JSON.stringify(responsePayment) as string;
         }catch(error){
             console.log(error);
             throw error;
